@@ -1,0 +1,16 @@
+#pragma kernel CSMain
+
+RWStructuredBuffer<float3> Vertices;
+Texture2D DisplacementMap;
+
+float DisplacementScale;
+
+[numthreads(8, 8, 1)]
+void CSMain(uint3 id : SV_DispatchThreadID)
+{
+    // Read the grayscale value from the displacement map
+    float displacement = DisplacementMap.Load(int3(id.x, id.y, 0)).r;
+
+    // Apply the displacement to the vertex position along the y-axis
+    Vertices[id.x].y -= displacement * DisplacementScale;
+}

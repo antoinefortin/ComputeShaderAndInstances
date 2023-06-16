@@ -1,0 +1,18 @@
+#pragma kernel CSMain
+
+RWStructuredBuffer<float3> Vertices;
+
+[numthreads(8, 8, 1)]
+void CSMain(uint3 id : SV_DispatchThreadID)
+{
+    // get the current vertex position
+    float3 pos = Vertices[id.x];
+
+    // modify pos here as you need
+    // for example, add a small offset to x component
+    pos.x += 0.001f;
+    pos.y -= 0.001f;
+
+    // write back the modified vertex position
+    Vertices[id.x] = pos;
+}
